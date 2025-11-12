@@ -3,16 +3,16 @@
 import asyncio
 from typing import List
 
-# Azure identity (async) & Azure AI SDKs
+# ── Azure identity (async) & Azure AI SDKs
 from azure.identity.aio import AzureCliCredential
-from azure.ai.projects.aio import AIProjectClient # Agent creation (Project-scoped)
-from azure.ai.agents.aio import AgentsClient as AsyncAgentsClient # Async Agents client
+from azure.ai.projects.aio import AIProjectClient                  # <-- Agent creation (Project-scoped)
+from azure.ai.agents.aio import AgentsClient as AsyncAgentsClient  # <-- Async Agents client
 
-# Microsoft Agent Framework (core)
-from agent_framework.azure import AzureAIAgentClient # Framework chat client for Azure AI Foundry
-from agent_framework import ChatAgent # Framework high-level chat orchestrator
+# ── Microsoft Agent Framework (core)
+from agent_framework.azure import AzureAIAgentClient               # <-- Framework chat client for Azure AI Foundry
+from agent_framework import ChatAgent                              # <-- Framework high-level chat orchestrator
 
-# OpenAPI tools
+# ── Tool modeling (OpenAPI tools)
 from azure.ai.agents.models import OpenApiTool, OpenApiAuthDetails
 
 # Local modules (same logic split for clarity)
@@ -25,7 +25,7 @@ FUNC_VALIDATE_URL,
 ASSISTANT_NAME,
 )
 from instructions import ASSISTANT_DESCRIPTION, ASSISTANT_INSTRUCTIONS
-from helpers import load_openapi, normalize_spec_path_from_url, single_path_spec
+from helpers import load_openapi, normalize_spec_path_from_url, single_path_spec, create_agent_compat, create_thread_compat
 
 # ────────────────────────────────────────────────────────────────────────────
 # Main — FULL Agent Framework usage
@@ -78,15 +78,16 @@ async def main():
 
     # ── Agent Framework + Azure AI Foundry (ASYNC) ──────────────────────────
     async with AzureCliCredential() as credential:
-        # (A) Create the assistant via the **Project-scoped** client (Agent Framework-friendly path)
+        # (A) Create the assistant via the **Project-scoped** client
         async with AIProjectClient(endpoint=PROJECT_ENDPOINT, credential=credential) as project_client:
             print("\n📋 Creating assistant in Azure AI Foundry (via Project client)...")
-            assistant = await project_client.agents.create_agent(
+            assistant = await create_agent_compat(
+                project_client,
                 model=MODEL_DEPLOYMENT,
                 name=ASSISTANT_NAME,
                 description=ASSISTANT_DESCRIPTION,
                 instructions=ASSISTANT_INSTRUCTIONS,
-                tools=tool_definitions,  # attach tools at creation
+                tools=tool_definitions,
             )
             print("✅ Assistant created")
             print(f"   Name : {getattr(assistant, 'name', '')}")
@@ -94,16 +95,26 @@ async def main():
             print(f"   Model: {getattr(assistant, 'model', '')}")
 
             # (B) Open an **async Agents client** and pass it to the **Agent Framework** chat client.
-            #     This is the reliable way to satisfy the framework's requirement without extra credential args.
             async with AsyncAgentsClient(endpoint=PROJECT_ENDPOINT, credential=credential) as agents_client:
+                # Create a PERSISTENT THREAD once and reuse it for the whole interactive loop
+                thread = await create_thread_compat(agents_client)
+                thread_id = getattr(thread, "id", None) if thread else None
 
-                # ── Agent Framework FEATURE: AzureAIAgentClient ties the framework to Azure AI Foundry Agents
-                framework_chat_client = AzureAIAgentClient(
-                    agents_client=agents_client,  # <-- inject async Agents client
-                    agent_id=assistant.id         # <-- real asst_... id
-                )
+                # ── AzureAIAgentClient ties the framework to Azure AI Foundry Agents
+                # Pass thread_id when available to avoid accidental new-thread runs.
+                if thread_id and "thread_id" in AzureAIAgentClient.__init__.__code__.co_varnames:
+                    framework_chat_client = AzureAIAgentClient(
+                        agents_client=agents_client,
+                        agent_id=assistant.id,
+                        thread_id=thread_id
+                    )
+                else:
+                    framework_chat_client = AzureAIAgentClient(
+                        agents_client=agents_client,
+                        agent_id=assistant.id
+                    )
 
-                # ── Agent Framework FEATURE: ChatAgent = high-level chat orchestrator with streaming
+                # ── ChatAgent = high-level chat orchestrator with streaming
                 async with ChatAgent(chat_client=framework_chat_client) as agent:
                     print("\n" + "="*72)
                     print("💬 Interactive Chat via Microsoft Agent Framework (type 'quit' to exit)")
@@ -122,18 +133,12 @@ async def main():
                             print("\n👋 Goodbye!")
                             break
 
-                        # ── Agent Framework FEATURE: Streaming tokens + tool-call aware events (when available)
+                        # Streaming tokens + tool-call aware events (when available)
                         print("Agent: ", end="", flush=True)
                         async for chunk in agent.run_stream(user_input):
-                            # chunk may contain partial text tokens; framework merges them into a coherent stream
                             if getattr(chunk, "text", None):
                                 print(chunk.text, end="", flush=True)
-                            # Some framework builds expose extra metadata on chunks (tool call phases, etc.)
-                            # We keep this generic to work across builds.
                         print()  # newline
-
-                        # Tip: For deeper introspection (e.g., list messages / tool invocations),
-                        # you can query the underlying thread/run via agents_client if your framework build exposes IDs.
 
 
 if __name__ == "__main__":
