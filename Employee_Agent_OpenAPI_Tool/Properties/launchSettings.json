@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Pfizer.EmpInfoUpdate": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7260",
+      "launchBrowser": false
+    }
+  }
+}

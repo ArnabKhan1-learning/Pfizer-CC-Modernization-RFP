@@ -1,0 +1,8 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "rgpfizerdemo9d75",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "SqlConnectionString": "Server=pfizer-cc-demo-server.database.windows.net;Database=pfizer-cc-demo-DB;User Id=PfizerCCAdmin;Password=Welcome@123!$;Encrypt=True;"
+  }
+}

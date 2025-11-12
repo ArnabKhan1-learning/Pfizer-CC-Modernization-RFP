@@ -1,0 +1,14 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "",
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+
+    "PROJECT_BASE": "https://emp-asst.services.ai.azure.com/api/projects/Emp-Asst",
+    "AGENT_ID": "asst_qQcjBWcECzeAQy8njUSf2zwM",
+    "API_VERSION": "v1",
+
+    "REQUIRE_X_API_KEY": "false",
+    "X_API_KEY": ""
+  }
+}

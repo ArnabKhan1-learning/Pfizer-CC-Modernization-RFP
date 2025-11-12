@@ -1,0 +1,204 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Pfizer.EmpInfoUpdate</name>
+    </assembly>
+    <members>
+        <member name="T:Pfizer.EmpInfoUpdate.Model.EchoRequest">
+            <summary>
+            Request model for echo testing endpoint
+            </summary>
+        </member>
+        <member name="P:Pfizer.EmpInfoUpdate.Model.EchoRequest.Name">
+            <summary>
+            Test name field
+            </summary>
+        </member>
+        <member name="P:Pfizer.EmpInfoUpdate.Model.EchoRequest.Value">
+            <summary>
+            Test integer value field
+            </summary>
+        </member>
+        <member name="P:Pfizer.EmpInfoUpdate.Model.EchoRequest.Description">
+            <summary>
+            Test description field
+            </summary>
+        </member>
+        <member name="T:Pfizer.EmpInfoUpdate.Model.ErrorResponse">
+            <summary>
+            Standard error response model for API operations
+            </summary>
+        </member>
+        <member name="P:Pfizer.EmpInfoUpdate.Model.ErrorResponse.ErrorMessage">
+            <summary>
+            Human-readable error message
+            </summary>
+        </member>
+        <member name="P:Pfizer.EmpInfoUpdate.Model.ErrorResponse.ErrorCode">
+            <summary>
+            Error code for programmatic error handling
+            </summary>
+        </member>
+        <member name="T:Pfizer.EmpInfoUpdate.Model.HealthCheckRequest">
+            <summary>
+            Request model for health check with optional extended diagnostics
+            </summary>
+        </member>
+        <member name="P:Pfizer.EmpInfoUpdate.Model.HealthCheckRequest.CheckDatabase">
+            <summary>
+            Whether to include database connectivity check
+            </summary>
+        </member>
+        <member name="P:Pfizer.EmpInfoUpdate.Model.HealthCheckRequest.IncludeMetrics">
+            <summary>
+            Whether to include performance metrics
+            </summary>
+        </member>
+        <member name="P:Pfizer.EmpInfoUpdate.Model.HealthCheckRequest.ClientIdentifier">
+            <summary>
+            Optional client identifier for tracking
+            </summary>
+        </member>
+        <member name="T:Pfizer.EmpInfoUpdate.Model.UpdateEmployeeProfileRequest">
+            <summary>
+            Request model for updating employee profile information
+            </summary>
+        </member>
+        <member name="P:Pfizer.EmpInfoUpdate.Model.UpdateEmployeeProfileRequest.employee_id">
+            <summary>
+            Employee ID (required)
+            </summary>
+        </member>
+        <member name="P:Pfizer.EmpInfoUpdate.Model.UpdateEmployeeProfileRequest.department">
+            <summary>
+            New department name (optional)
+            </summary>
+        </member>
+        <member name="P:Pfizer.EmpInfoUpdate.Model.UpdateEmployeeProfileRequest.job_title">
+            <summary>
+            New job title (optional)
+            </summary>
+        </member>
+        <member name="P:Pfizer.EmpInfoUpdate.Model.UpdateEmployeeProfileRequest.address">
+            <summary>
+            New address (optional)
+            </summary>
+        </member>
+        <member name="T:Pfizer.EmpInfoUpdate.Model.UpdateEmployeeResponse">
+            <summary>
+            Response model for employee profile update operations
+            </summary>
+        </member>
+        <member name="P:Pfizer.EmpInfoUpdate.Model.UpdateEmployeeResponse.Message">
+            <summary>
+            Update operation result message
+            </summary>
+        </member>
+        <member name="P:Pfizer.EmpInfoUpdate.Model.UpdateEmployeeResponse.RowsUpdated">
+            <summary>
+            Number of rows updated in the database
+            </summary>
+        </member>
+        <member name="T:Pfizer.EmpInfoUpdate.Model.ValidateEmployeeProfileRequest">
+            <summary>
+            Request model for validating employee profile identity information
+            </summary>
+        </member>
+        <member name="P:Pfizer.EmpInfoUpdate.Model.ValidateEmployeeProfileRequest.employee_id">
+            <summary>
+            Employee ID (required)
+            </summary>
+        </member>
+        <member name="P:Pfizer.EmpInfoUpdate.Model.ValidateEmployeeProfileRequest.first_name">
+            <summary>
+            Employee first name (required)
+            </summary>
+        </member>
+        <member name="P:Pfizer.EmpInfoUpdate.Model.ValidateEmployeeProfileRequest.last_name">
+            <summary>
+            Employee last name (required)
+            </summary>
+        </member>
+        <member name="T:Pfizer.EmpInfoUpdate.Model.ValidateEmployeeResponse">
+            <summary>
+            Response model for employee profile validation
+            </summary>
+        </member>
+        <member name="P:Pfizer.EmpInfoUpdate.Model.ValidateEmployeeResponse.IsValid">
+            <summary>
+            Indicates whether the validation was successful
+            </summary>
+        </member>
+        <member name="P:Pfizer.EmpInfoUpdate.Model.ValidateEmployeeResponse.ValidationMessage">
+            <summary>
+            Validation result message
+            </summary>
+        </member>
+        <member name="T:Pfizer.EmpInfoUpdate.RequestValidation">
+            <summary>
+            Helper to deserialize and validate request bodies using DataAnnotations
+            without consuming the HttpRequestData.Body stream (position is reset when possible).
+            </summary>
+        </member>
+        <member name="M:Pfizer.EmpInfoUpdate.WorkerExtensionStartupCodeExecutor.Configure(Microsoft.Azure.Functions.Worker.IFunctionsWorkerApplicationBuilder)">
+            <summary>
+            Configures the worker to register extension startup services.
+            </summary>
+            <param name="applicationBuilder">The <see cref="T:Microsoft.Azure.Functions.Worker.IFunctionsWorkerApplicationBuilder"/> to configure.</param>
+        </member>
+        <member name="M:Pfizer.EmpInfoUpdate.DirectFunctionExecutor.ExecuteAsync(Microsoft.Azure.Functions.Worker.FunctionContext)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Pfizer.EmpInfoUpdate.FunctionExecutorHostBuilderExtensions">
+            <summary>
+            Extension methods to enable registration of the custom <see cref="T:Microsoft.Azure.Functions.Worker.Invocation.IFunctionExecutor"/> implementation generated for the current worker.
+            </summary>
+        </member>
+        <member name="M:Pfizer.EmpInfoUpdate.FunctionExecutorHostBuilderExtensions.ConfigureGeneratedFunctionExecutor(Microsoft.Extensions.Hosting.IHostBuilder)">
+            <summary>
+             Configures an optimized function executor to the invocation pipeline.
+            </summary>
+        </member>
+        <member name="T:Pfizer.EmpInfoUpdate.FunctionExecutorAutoStartup">
+            <summary>
+            Auto startup class to register the custom <see cref="T:Microsoft.Azure.Functions.Worker.Invocation.IFunctionExecutor"/> implementation generated for the current worker.
+            </summary>
+        </member>
+        <member name="M:Pfizer.EmpInfoUpdate.FunctionExecutorAutoStartup.Configure(Microsoft.Extensions.Hosting.IHostBuilder)">
+            <summary>
+            Configures the <see cref="T:Microsoft.Extensions.Hosting.IHostBuilder"/> to use the custom <see cref="T:Microsoft.Azure.Functions.Worker.Invocation.IFunctionExecutor"/> implementation generated for the current worker.
+            </summary>
+            <param name="hostBuilder">The <see cref="T:Microsoft.Extensions.Hosting.IHostBuilder"/> instance to use for service registration.</param>
+        </member>
+        <member name="T:Pfizer.EmpInfoUpdate.GeneratedFunctionMetadataProvider">
+            <summary>
+            Custom <see cref="T:Microsoft.Azure.Functions.Worker.Core.FunctionMetadata.IFunctionMetadataProvider"/> implementation that returns function metadata definitions for the current worker."/>
+            </summary>
+        </member>
+        <member name="M:Pfizer.EmpInfoUpdate.GeneratedFunctionMetadataProvider.GetFunctionMetadataAsync(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Pfizer.EmpInfoUpdate.WorkerHostBuilderFunctionMetadataProviderExtension">
+            <summary>
+            Extension methods to enable registration of the custom <see cref="T:Microsoft.Azure.Functions.Worker.Core.FunctionMetadata.IFunctionMetadataProvider"/> implementation generated for the current worker.
+            </summary>
+        </member>
+        <member name="M:Pfizer.EmpInfoUpdate.WorkerHostBuilderFunctionMetadataProviderExtension.ConfigureGeneratedFunctionMetadataProvider(Microsoft.Extensions.Hosting.IHostBuilder)">
+            <summary>
+             Adds the GeneratedFunctionMetadataProvider to the service collection.
+             During initialization, the worker will return generated function metadata instead of relying on the Azure Functions host for function indexing.
+            </summary>
+        </member>
+        <member name="T:Pfizer.EmpInfoUpdate.FunctionMetadataProviderAutoStartup">
+            <summary>
+            Auto startup class to register the custom <see cref="T:Microsoft.Azure.Functions.Worker.Core.FunctionMetadata.IFunctionMetadataProvider"/> implementation generated for the current worker.
+            </summary>
+        </member>
+        <member name="M:Pfizer.EmpInfoUpdate.FunctionMetadataProviderAutoStartup.Configure(Microsoft.Extensions.Hosting.IHostBuilder)">
+            <summary>
+            Configures the <see cref="T:Microsoft.Extensions.Hosting.IHostBuilder"/> to use the custom <see cref="T:Microsoft.Azure.Functions.Worker.Core.FunctionMetadata.IFunctionMetadataProvider"/> implementation generated for the current worker.
+            </summary>
+            <param name="hostBuilder">The <see cref="T:Microsoft.Extensions.Hosting.IHostBuilder"/> instance to use for service registration.</param>
+        </member>
+    </members>
+</doc>
